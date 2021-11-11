@@ -22,6 +22,7 @@ const io = new Server(server, {
 });
 
 io.on(IOEvents.CONNECTION, (socket: Socket) => {
+  console.log("IOEvents.CONNECTION socketId: " + socket.id);
   // socket.on("message", async (data) => {
   //   console.log("message " + data);
   //   socket.broadcast.to(data.id).emit("message", data.message);
@@ -29,6 +30,7 @@ io.on(IOEvents.CONNECTION, (socket: Socket) => {
 
   socket.on(IOEvents.CREATE_ROOM, async (message) => {
     const newID = generateUniqueName().toLowerCase();
+    console.log("IOEvents.CREATE_ROOM newId: " + newID);
 
     socket.join(newID);
 
@@ -36,12 +38,14 @@ io.on(IOEvents.CONNECTION, (socket: Socket) => {
   });
 
   socket.on(IOEvents.JOIN_ROOM, async (message) => {
+    console.log("IOEvents.JOIN_ROOM room Id: " + message.id);
     socket.join(message.id);
 
     socket.emit(IOEvents.JOIN_ROOM, true);
   });
 
   socket.on(IOEvents.GROUPS_GET, async (message) => {
+    console.log("IOEvents.GROUPS_GET ");
     const room = [...socket.rooms][1];
 
     const host = [...(await io.in(room).allSockets())][0];
@@ -49,6 +53,7 @@ io.on(IOEvents.CONNECTION, (socket: Socket) => {
   });
 
   socket.on(IOEvents.GROUPS_GET_RESPONSE, (data) => {
+    console.log("IOEvents.GROUPS_GET_RESPONSE ");
     const room = [...socket.rooms][1];
     socket.broadcast.to(room).emit(IOEvents.GROUPS_GET_RESPONSE, data);
   });
@@ -70,6 +75,7 @@ io.on(IOEvents.CONNECTION, (socket: Socket) => {
   });
 
   socket.on(IOEvents.HOST_DISCONNECT, async () => {
+    console.log("IOEvents.HOST_DISCONNECT ");
     const room = [...socket.rooms][1];
 
     socket.broadcast.to(room).emit(IOEvents.HOST_DISCONNECT, {});
