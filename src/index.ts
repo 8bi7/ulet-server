@@ -2,12 +2,9 @@ import cors from "cors";
 import express from "Express";
 import { Server, Socket } from "socket.io";
 import { createServer } from "http";
-import * as dotenv from "dotenv";
 
 import { generateUniqueName } from "./utils";
 import { IOEvents } from "./types";
-
-dotenv.config();
 
 const PORT = process.env.PORT || 8080;
 
