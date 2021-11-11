@@ -1,5 +1,5 @@
 import cors from "cors";
-import express from "Express";
+import express from "express";
 import { Server, Socket } from "socket.io";
 import { createServer } from "http";
 
