@@ -59,8 +59,6 @@ io.on(IOEvents.CONNECTION, (socket: Socket) => {
   socket.on(IOEvents.GROUPS_POST, (message) => {});
 
   socket.on(IOEvents.BUTTON_PRESS, async (message) => {
-    console.log(message);
-
     const room = [...socket.rooms][1];
     const host = [...(await io.in(room).allSockets())][0];
 
@@ -76,13 +74,11 @@ io.on(IOEvents.CONNECTION, (socket: Socket) => {
 
   socket.on(IOEvents.HOST_DISCONNECT, async () => {
     const room = [...socket.rooms][1];
-    console.log({ clientsInRoom: await io.in(room).allSockets() });
+
     socket.broadcast.to(room).emit(IOEvents.HOST_DISCONNECT, {});
 
     io.socketsLeave(room);
     const host = await io.in(room).allSockets();
-    console.log({ room });
-    console.log({ clientsInRoom: host });
   });
 
   socket.on(IOEvents.DISCONNECT, async (data) => {
